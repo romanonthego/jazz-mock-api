@@ -1,3 +1,3 @@
-require './hello.rb'
+require './jazz.rb'
 
-run Hello::API
+run Jazz::API

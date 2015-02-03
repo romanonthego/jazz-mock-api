@@ -115,7 +115,38 @@ module Jazz
 
 
       def title_card
-  
+        {
+          type: 'title',
+          id: Faker::Number.number(10),
+          title: "Марокко",
+          content: {
+            title: "Марокко",
+            rating: 4.2,
+            locations: [
+              {
+                title: "Марокко",
+                name: 'marocco',
+                geo_prefix: ''
+              },
+              {
+                title: "Рабат",
+                name: 'rabat',
+                geo_prefix: '/marocco'
+              },
+              {
+                title: "Рабат",
+                name: 'rabat',
+                geo_prefix: '/marocco'
+              }
+            ],
+            text: description,
+            photos: [
+              photo,
+              photo,
+              photo
+            ]
+          }
+        } 
       end
 
       def peoples_card

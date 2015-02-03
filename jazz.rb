@@ -22,6 +22,14 @@ module Jazz
     # end
 
     helpers do
+      def photo_url
+        'http://public.gde.travel/images/JazzTour/thumbnail/slider/6sqh9z1uxo.jpg'
+      end
+
+      def photo_thumb_url
+        'http://public.gde.travel/images/JazzTour/thumbnail/content/p67i97mjpq.jpg'
+      end
+
       def content_5_ways
         {
           type: 'content',
@@ -37,7 +45,8 @@ module Jazz
               },
               {
                 type: 'photo',
-                url: 'http://public.gde.travel/images/JazzTour/thumbnail/slider/oybz4345zu.jpg',
+                url:photo_url,
+                thumb: photo_thumb_url,
                 title: 'Мыс Нордкап в лучах полуночного солнца, Северная Норвегия'
               },
               {
@@ -48,7 +57,8 @@ module Jazz
               },
               {
                 type: 'photo',
-                url: 'http://public.gde.travel/images/JazzTour/thumbnail/slider/k98qq87lbd.jpg',
+                url:photo_url,
+                thumb: photo_thumb_url,
                 title: 'Северная Норвегия, рыбалка'
               },
               {
@@ -59,7 +69,8 @@ module Jazz
               },
               {
                 type: 'photo',
-                url: 'http://public.gde.travel/images/JazzTour/thumbnail/slider/e8r34od38f.jpg',
+                url:photo_url,
+                thumb: photo_thumb_url,
                 title: 'Лофотенские острова, Норвегия'
               }
             ]
@@ -179,8 +190,8 @@ module Jazz
                   photos: [
                     {
                       title: 'title',
-                      url:"http://loremflickr.com/741/304/#{Faker::Address.country}.jpg",
-                      thumb: "http://loremflickr.com/152/152/#{Faker::Address.country}.jpg"
+                      url:photo_url,
+                      thumb: photo_thumb_url
                     }
                   ]*rnd,
                   primary_tags: [
@@ -230,8 +241,8 @@ module Jazz
                         photos: [
                           {
                             title: 'title',
-                            url:"http://loremflickr.com/741/304/#{Faker::Address.country}.jpg",
-                            thumb: "http://loremflickr.com/152/152/#{Faker::Address.country}.jpg"
+                            url:photo_url,
+                            thumb: photo_thumb_url
                           }
                         ]*rnd,
                         services: [
@@ -350,8 +361,8 @@ module Jazz
                 photos: [
                   {
                     title: 'title',
-                    url:"http://loremflickr.com/741/304/#{Faker::Address.country}.png",
-                    thumb: "http://loremflickr.com/152/152/#{Faker::Address.country}.png"
+                    url:photo_url,
+                    thumb: photo_thumb_url
                   }
                 ]*20
               }

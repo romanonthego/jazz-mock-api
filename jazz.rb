@@ -30,11 +30,107 @@ module Jazz
         'http://public.gde.travel/images/JazzTour/thumbnail/content/p67i97mjpq.jpg'
       end
 
+      def list_of_articles
+        id = Faker::Number.number(10)
+
+        {
+          type: 'list_of_objects',
+          id: id,
+          title: 'Что почитать про Норвегию',
+          content: {
+            objects: [
+              {
+                type: 'article',
+                title: 'Виза в Норвегию',
+                object: {
+                  type: 'article',
+                  id: 12,
+                  slug: 'some-awesome-article'
+                },
+                content: {
+                  description: description,
+                  photos: [
+                    photo
+                  ]
+                }
+              },
+              tour
+            ]
+          }
+        }
+      end
+
+      def single_object_with_preview
+        id = rnd
+        {
+          type: 'single_object',
+          id: Faker::Number.number(10),
+          title: 'Виза',
+          object: {
+            type: 'article',
+            id: id,
+            geo_prefix: 'marocco/rabat',
+            slug: 'norway-visa'
+          },
+          content: {
+            sections: [
+              {
+                type: 'text',
+                text: description
+              }
+            ]
+          }
+        }
+      end
+
+      def sing_object_without_content
+        id = rnd
+        {
+          type: 'single_object',
+          id: Faker::Number.number(10),
+          title: 'Погода в норвегии',
+          object: {
+            type: 'article',
+            id: id,
+            geo_prefix: 'marocco/rabat',
+            slug: 'weather-in-norway'
+          },
+          # content: {
+          # }
+        }
+      end
+
+      def single_object_with_photo
+        id = rnd
+        {
+          type: 'single_object',
+          id: Faker::Number.number(10),
+          title: 'Лето в норвегии',
+          object: {
+            type: 'tour',
+            id: id,
+            geo_prefix: 'marocco/rabat',
+            slug: 'awesome-tour'
+          },
+          content: {
+            sections: [
+              {
+                type: 'photo',
+                url:photo_url,
+                thumb: photo_thumb_url,
+                title: 'Мыс Нордкап в лучах полуночного солнца, Северная Норвегия'
+              }
+            ]
+          }
+        }
+      end
+
       def content_5_ways
         {
           type: 'content',
           id: Faker::Number.number(10),
           title: "5 причин отправиться на отдых в Норвегию",
+          navigation: true,
           content: {
             sections: [
               {
@@ -56,9 +152,11 @@ module Jazz
 Умеренный климат, невероятно красивая девственная природа, чистейшая экология и спокойный ритм жизни в Норвегии создают идеальные условия для отдыха и восстановления жизненных сил. При этом вдали от цивилизации в колоритных поселках прямо на берегу фьорда в окружении живописных пейзажей можно остановиться в первоклассных четырех- и пятизвездочных отелях с самым высоким уровнем сервиса, что делает отдых еще более приятным.'
               },
               {
-                type: 'photo',
-                url:photo_url,
-                thumb: photo_thumb_url,
+                type: 'slideshow',
+                photos: [
+                  photo
+                ]*rnd,
+                description: description,
                 title: 'Северная Норвегия, рыбалка'
               },
               {
@@ -68,9 +166,13 @@ module Jazz
 Умеренный климат, невероятно красивая девственная природа, чистейшая экология и спокойный ритм жизни в Норвегии создают идеальные условия для отдыха и восстановления жизненных сил. При этом вдали от цивилизации в колоритных поселках прямо на берегу фьорда в окружении живописных пейзажей можно остановиться в первоклассных четырех- и пятизвездочных отелях с самым высоким уровнем сервиса, что делает отдых еще более приятным.'
               },
               {
-                type: 'photo',
-                url:photo_url,
-                thumb: photo_thumb_url,
+                type: 'gallery',
+                # url:photo_url,
+                # thumb: photo_thumb_url,
+                photos: [
+                  photo
+                ]*rnd,
+                description: description,
                 title: 'Лофотенские острова, Норвегия'
               }
             ]
@@ -83,6 +185,7 @@ module Jazz
           type: 'title',
           id: Faker::Number.number(10),
           title: "Марокко",
+          navigation: true,
           content: {
             title: "Марокко",
             rating: 4.2,
@@ -441,6 +544,7 @@ module Jazz
         ]
         {
           url: photos.sample,
+          thumb: photo_thumb_url,
           title: "photo title (optional)",
           alt: "photo alt (optional)"
         }
@@ -511,7 +615,7 @@ module Jazz
       end
 
       def locations_list
-        name = Faker::Address.country
+        name = Faker::Address.country.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 
         {
           type: 'locations_list',
@@ -519,7 +623,7 @@ module Jazz
           
           object: {
             type: 'location',
-            name: name.underscore,
+            name: name,
             geo_prefix: '',
             title: "Африка"
           },
@@ -699,15 +803,16 @@ module Jazz
               geo_prefix: 'marocco/rabat',
               slug: 'awesome-tour'
             },
-            meta: {
+            meta_info: {
               title: "Самый лучший тур",
               description: "Описание самого лучшего тура",
+              image: photo_url,
               
               open_graph: {
                 title: "Самый лучший тур для facebook"
               },
               schema_org: {
-
+                
               },
               twitter: {
 
@@ -755,7 +860,7 @@ module Jazz
            name: params.name,
            geo_prefix: 'marocco/rabat',
          },
-         meta: {
+         meta_info: {
            title: "Марокко",
            description: "Описание марокко",
            
@@ -774,6 +879,10 @@ module Jazz
              # title_card,
              title_norway,
              content_5_ways,
+             single_object_with_preview,
+             single_object_with_photo,
+             sing_object_without_content,
+             list_of_articles,
              # peoples_card,
              # dates_card,
              # accomodation_card,
@@ -845,6 +954,28 @@ module Jazz
       # route_param :name do
     
       # end
+    end
+
+    resource :articles do
+      params do
+        requires :id, type: Integer, desc: "Status id."
+      end
+      route_param :id do
+        get do
+          id = params.id
+          {
+            id: id,
+            type: 'article',
+            title: 'jaja',
+            object: {
+              type: 'article',
+              id: id,
+              slug: 'jaja-article'
+            },
+            content: {}
+          }
+        end
+      end
     end
   end
 end

@@ -30,6 +30,29 @@ module Jazz
         'http://public.gde.travel/images/JazzTour/thumbnail/content/p67i97mjpq.jpg'
       end
 
+      def list_of_tours
+        id = Faker::Number.number(10)
+        {
+          type: 'list_of_objects',
+          id: id,
+          title: 'Туры в Норвегию',
+          content: {
+            objects: [
+              tour,
+              tour,
+              tour,
+              tour 
+            ],
+            link_to_list: {
+              type: 'tours',
+              name: 'norway',
+              title: 'Все туры в Норвегию',
+              geo_prefix: 'europe/norway'
+            }
+          }
+        }
+      end
+
       def list_of_articles
         id = Faker::Number.number(10)
 
@@ -53,9 +76,8 @@ module Jazz
                     photo
                   ]
                 }
-              },
-              tour
-            ]
+              }
+            ]*4
           }
         }
       end
@@ -255,7 +277,11 @@ module Jazz
       def peoples_card
         {
           type: 'peoples',
-          id: Faker::Number.number(10),        }
+          id: Faker::Number.number(10),        
+          adults: 4,
+          childrens: [
+          ]
+        }
       end
 
       def dates_card
@@ -314,10 +340,12 @@ module Jazz
                 title: 'Отель ' + title,
                 is_default: true,
                 object: {
+                  type: 'hotel',
                   geo_prefix: 'usa/new-york',
                   id: rnd,
                   slug: title
                 },
+                price: price,
                 content: {
                   stars: Random.rand(4) + 1,
                   description: description,
@@ -422,54 +450,120 @@ module Jazz
               },
               {
                 type: 'hotel',
-                id: Faker::Number.number(10),
+                id: rnd,
                 title: 'Отель ' + title,
-                stars: Random.rand(4) + 1,
-                is_default: false,
-                description: description,
-                primary_tags: [
-                  {
-                    type: 'peoples',
-                    value: 'от 3-х'
-                  },
-                  {
-                    type: 'duration',
-                    value: '12 дней'
-                  }
-                ],
-                secondary_tags: [
-                  {
-                    type: 'hotel',
-                    value: 'Отель 3 звезды'
-                  },
-                  {
-                    type: 'activities',
-                    value: [
-                      {name: 'city-life', title: 'Городской отдых'},
-                      {name: 'active', title: 'Активный отдых'}
-                    ]
-                  }
-                ],
-                variants: [
-                  {
-                    type: 'room',
-                    id: Faker::Number.number(10),
-                    title: 'Комната ' + title,
-                    description: description
-                  },
-                  {
-                    type: 'room',
-                    id: Faker::Number.number(10),
-                    title: 'Комната ' + title,
-                    description: description
-                  },
-                  {
-                    type: 'room',
-                    id: Faker::Number.number(10),
-                    title: 'Комната ' + title,
-                    description: description
-                  }
-                ]
+                is_default: true,
+                object: {
+                  type: 'hotel',
+                  geo_prefix: 'usa/new-york',
+                  id: rnd,
+                  slug: title
+                },
+                price: price,
+                content: {
+                  stars: Random.rand(4) + 1,
+                  description: description,
+                  photos: [
+                    {
+                      title: 'title',
+                      url:photo_url,
+                      thumb: photo_thumb_url
+                    }
+                  ]*rnd,
+                  primary_tags: [
+                    {
+                      type: 'capacity',
+                      value: '2 основных места'
+                    },
+                    {
+                      type: 'area',
+                      value: '37 м2'
+                    }
+                  ],
+                  # secondary_tags: [
+                  #   {
+                  #     type: 'hotel',
+                  #     value: 'Отель 3 звезды'
+                  #   },
+                  #   {
+                  #     type: 'activities',
+                  #     value: [
+                  #       {name: 'city-life', title: 'Городской отдых'},
+                  #       {name: 'active', title: 'Активный отдых'}
+                  #     ]
+                  #   }
+                  # ],
+                  services: [
+                    {
+                      title: 'Услуги отеля',
+                      list: ["Бассейн", "Конференц-зал", "Консьерж", "Фитнес центр", "Йога"]
+                    },
+                    {
+                      title: 'Бесплатный сервис',
+                      list: ["Крулосуточное обслуживание в номерах", "Номера для людей с ограниченными возможностями", "Уборка номера 2 раза в день"]
+                    },
+                    {
+                      title: 'За дополнительную плату',
+                      list: ["Интернет", "Разрешено размещение с животными", "WI-FI", "Парковка"]
+                    }
+                  ],
+                  variants: [
+                    {
+                      type: 'room',
+                      id: Faker::Number.number(10),
+                      title: 'Комната ' + title,
+                      price: price,
+                      content: {
+                        description: description,
+                        photos: [
+                          {
+                            title: 'title',
+                            url:photo_url,
+                            thumb: photo_thumb_url
+                          }
+                        ]*rnd,
+                        services: [
+                          {
+                            title: 'Услуги отеля',
+                            list: ["Бассейн", "Конференц-зал", "Консьерж", "Фитнес центр", "Йога"]
+                          },
+                          {
+                            title: 'Бесплатный сервис',
+                            list: ["Крулосуточное обслуживание в номерах", "Номера для людей с ограниченными возможностями", "Уборка номера 2 раза в день"]
+                          },
+                          {
+                            title: 'За дополнительную плату',
+                            list: ["Интернет", "Разрешено размещение с животными", "WI-FI", "Парковка"]
+                          }
+                        ],
+                        primary_tags: [
+                          {
+                            type: 'capacity',
+                            value: '2 основных места'
+                          },
+                          {
+                            type: 'area',
+                            value: '37 м2'
+                          }
+                        ]
+                      },
+                    },
+                    {
+                      type: 'room',
+                      id: Faker::Number.number(10),
+                      title: 'Комната ' + title,
+                      description: description,
+                      price: price,
+                    },
+                    {
+                      type: 'room',
+                      id: Faker::Number.number(10),
+                      title: 'Комната ' + title,
+                      description: description,
+                      price: price,
+                    }
+                  ]
+                }
               }
             ]
           }
@@ -883,6 +977,7 @@ module Jazz
              single_object_with_photo,
              sing_object_without_content,
              list_of_articles,
+             list_of_tours,
              # peoples_card,
              # dates_card,
              # accomodation_card,

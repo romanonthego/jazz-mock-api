@@ -15,15 +15,103 @@ module Jazz
   class API < Grape::API
     # version 'v1', using: :header, vendor: 'twitter'
     format :json
-    # prefix :api
-    
-    # get '/hello' do
-    #   {hello: 'world'}
-    # end
 
     helpers do
+      def review
+        {
+          type: 'review',
+          id: rnd,
+          content: {
+            quote: "Наш Ванечка закончил 1ый класс - у него стали появляться новые интересы и я поняла, что если не сейчас то потом актуальность данной поездки будет под вопросом. Ездили на майские в 2012 году в Биллунд Ресорт - понравилось всей семье. Больше всего в Леголенде нас поразили не аттракционы, а грандиозные действующие модели, собранные из конструктора Лего. Там есть модели всего – аэропорта Копенгагена с движущимися самолетами, центральной площади Копенгагена с дворцами, порта с движущимися кораблями, поездами, машинами.",
+            name: "Галина",
+            cover: {
+              url: "http://www.jazztour.ru/images/pr/143646.jpg"
+            }
+          }
+        }  
+      end
+
+      def legoland
+        id = rnd
+        {
+          type: 'tour',
+          id: id,
+          title: 'Леголэнд',
+          object: {
+            type: 'special',
+            name: 'legoland',
+          },
+          price: [
+            {
+              currency: 'rub',
+              amount: '120000'
+            },
+            {
+              currency: 'usd',
+              amount: '2200'
+            }
+          ],
+          content: {
+            rating: 4.7,
+            title: 'Лучший тур в самую лучшую страну в мире',
+            description: "Morocco is a North African country that has a coastline on both the North Atlantic Ocean and the Mediterranean Sea. It has borders with Western Sahara to the south, Algeria to the east and the Spanish North African territories of Ceuta and Melilla on the Mediterranean coast in the north. It is just across the Strait of Gibraltar from Gibraltar.Morocco is a North African country that has a coastline on both the North Atlantic Ocean and the Mediterranean Sea. It has borders with Western Sahara to the south, Algeria to the east and the Spanish North African territories of Ceuta and Melilla on the Mediterranean coast in the north. It is just across the Strait of Gibraltar from Gibraltar.Morocco is a North African country that has a coastline on both the North Atlantic Ocean and the Mediterranean Sea. It has borders with Western Sahara to the south, Algeria to the east and the Spanish North African territories of Ceuta and Melilla on the Mediterranean coast in the north. It is just across the Strait of Gibraltar from Gibraltar.",
+            locations: [
+              {
+                title: "Марокко",
+                name: 'marocco',
+                geo_prefix: ''
+              },
+              {
+                title: "Рабат",
+                name: 'rabat',
+                geo_prefix: '/marocco'
+              },
+              {
+                title: "Рабат",
+                name: 'rabat',
+                geo_prefix: '/marocco'
+              }
+            ],
+            photos: [
+              legoland_photo,
+              legoland_photo,
+              legoland_photo
+            ],
+            # primary_tags: [
+            #   {
+            #     type: 'peoples',
+            #     value: 'от 3-х'
+            #   },
+            #   {
+            #     type: 'duration',
+            #     value: '12 дней'
+            #   }
+            # ],
+            # secondary_tags: [
+            #   {
+            #     type: 'hotel',
+            #     value: 'Отель 3 звезды'
+            #   },
+            #   {
+            #     type: 'activities',
+            #     value: [
+            #       {name: 'city-life', title: 'Городской отдых'},
+            #       {name: 'active', title: 'Активный отдых'}
+            #     ]
+            #   }
+            # ]
+          },
+        }
+      end
+
       def photo_url
         'http://public.gde.travel/images/JazzTour/thumbnail/slider/6sqh9z1uxo.jpg'
+      end
+
+      def legoland_photo
+        {
+          url: 'http://www.jazztour.ru/images/sizes/y450/143055.jpg'
+        }
       end
 
       def photo_thumb_url
@@ -244,6 +332,7 @@ module Jazz
           type: 'title',
           id: Faker::Number.number(10),
           title: "Марокко",
+          navigation: true,
           content: {
             title: "Марокко",
             rating: 4.2,
@@ -278,6 +367,7 @@ module Jazz
         {
           type: 'peoples',
           id: Faker::Number.number(10),        
+          navigation: true,
           adults: 4,
           childrens: [
           ]
@@ -288,6 +378,7 @@ module Jazz
         {
           type: 'dates',
           id: Faker::Number.number(10),
+          navigation: true,
           content: {
             user_dates: {
 
@@ -574,7 +665,7 @@ module Jazz
         {
           type: 'media',
           id: Faker::Number.number(10),
-
+          navigation: true,
           content: {
             sections: [
               {
@@ -844,11 +935,50 @@ module Jazz
     end
 
     get '/main_grid' do
-      [
-        tour,
-        tour,
-        tour
-      ]
+      {
+        content: {
+          sections: [
+
+            {
+              config: 'two_small_one_medium',
+              title: 'Туры в Леголэнд',
+              content: {
+                main: [
+                  tour, tour, tour
+                ]
+              }
+            },
+
+            {
+              config: 'one_medium_two_small',
+              content: {
+                main: [
+                  tour, tour, tour
+                ]
+              }
+            },
+
+            {
+              config: 'list_of_small_cards',
+              content: {
+                main: [
+                  tour, tour, tour,
+                  tour, tour, tour
+                ]
+              }
+            },
+
+            {
+              config: 'list_of_big_cards',
+              content: {
+                main: [
+                  tour
+                ]
+              }
+            }
+          ]
+        }
+      }
     end
 
     get '/locations_lists' do
@@ -920,7 +1050,21 @@ module Jazz
                 peoples_card,
                 dates_card,
                 accomodation_card,
-                media_card
+                media_card,
+                media_card,
+                media_card,
+                media_card,
+                peoples_card,
+                dates_card,
+                accomodation_card,
+                media_card,
+                media_card,
+                media_card,
+                peoples_card,
+                dates_card,
+                accomodation_card,
+                media_card,
+                media_card,
               ],
               aside: [
                 {type: 'booking'},
@@ -1068,6 +1212,106 @@ module Jazz
               slug: 'jaja-article'
             },
             content: {}
+          }
+        end
+      end
+    end
+
+    resource :specials do
+      get do
+        [
+          legoland
+        ]
+      end
+
+      params do
+        requires :name
+      end
+
+      route_param :name do
+        get do
+          {
+            id: params.name,
+            type: 'special',
+            title: 'Леголэнд',
+            object: {
+              type: 'special',
+              name: 'legoland'
+            },
+            meta_info: {
+              title: "Леголэнд!"
+            },
+            content: {
+              # sections iteration
+              sections: [
+                {
+                  # section config
+                  config: 'list_of_big_cards',
+                  # maybe overuse - but still
+                  content: {
+                    main: [
+                      content_5_ways,
+                      # single_object_with_preview,
+                      # single_object_with_photo,
+                      # sing_object_without_content,
+                    ]
+                  }
+                },
+
+                {
+                  config: 'list_of_small_cards',
+                  title: 'Отзывы наших клиентов',
+                  content: {
+                    main: [
+                      review,
+                      review,
+                      review,
+                      review,
+                      review,
+                      review
+                    ]
+                  }
+                },
+
+                {
+                  config: 'two_small_one_medium',
+                  title: 'Туры в Леголэнд',
+                  content: {
+                    main: [
+                      tour, tour, tour
+                    ]
+                  }
+                },
+
+                {
+                  config: 'one_medium_two_small',
+                  content: {
+                    main: [
+                      tour, tour, tour
+                    ]
+                  }
+                },
+
+                {
+                  config: 'list_of_small_cards',
+                  content: {
+                    main: [
+                      tour, tour, tour,
+                      tour, tour, tour
+                    ]
+                  }
+                },
+
+                {
+                  config: 'list_of_big_cards',
+                  content: {
+                    main: [
+                      tour
+                    ]
+                  }
+                }
+              ]
+            }
           }
         end
       end

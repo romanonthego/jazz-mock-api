@@ -941,7 +941,7 @@ module Jazz
 
             {
               config: 'two_small_one_medium',
-              title: 'Туры в Леголэнд',
+              # title: 'Туры в Леголэнд',
               content: {
                 main: [
                   tour, tour, tour
@@ -982,19 +982,63 @@ module Jazz
     end
 
     get '/locations_lists' do
-      [
-        locations_list,
-        locations_list,
-        locations_list,
-      ]
+      {
+        content: {
+          sections: [
+            {
+              config: 'list_of_small_cards',
+              content: {
+                main: [
+                  locations_list,
+                  locations_list,
+                  locations_list
+                ]
+              }
+            },
+            {
+              config: 'list_of_small_cards',
+              title: 'Африка',
+              content: {
+                main: [
+                  locations_list,
+                  locations_list,
+                  locations_list
+                ]
+              }
+            }
+          ]
+        }
+      }
     end
 
     get '/activities_lists' do
-      [
-        activities_list,
-        activities_list,
-        activities_list
-      ]
+      {
+        content: {
+          sections: [
+            {
+              config: 'list_of_small_cards',
+              content: {
+                main: [
+                  activities_list,
+                  activities_list,
+                  activities_list
+                ]
+              }
+            },
+            {
+              config: 'list_of_small_cards',
+              title: 'Экстримальный отдых',
+              content: {
+                main: [
+                  activities_list,
+                  activities_list,
+                  activities_list
+                ]
+              }
+            }
+          ]
+        }
+      }
     end
 
     get '/activities' do
@@ -1314,6 +1358,22 @@ module Jazz
             }
           }
         end
+      end
+    end
+
+    resource :search do
+      get do
+        {
+          count: 360,
+          per_page: 20,
+          results: [
+            tour,
+            tour,
+            tour,
+            tour
+          ]
+        }
+
       end
     end
   end

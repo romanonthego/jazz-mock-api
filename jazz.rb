@@ -17,6 +17,127 @@ module Jazz
     format :json
 
     helpers do
+      def participation
+        {
+          type: 'participation',
+          id: rnd,
+          title_locations: 'Вы посетите',
+          title_activities: 'Вы займетесь',
+          locations: [
+            {
+              type: 'location',
+              title: "Рабат",
+              name: "rabat",
+              geo_prefix: 'earth/africa/morocco',
+            },
+            {
+              type: 'location',
+              title: "Рабат",
+              name: "rabat",
+              geo_prefix: 'earth/africa/morocco',
+            },
+            {
+              type: 'location',
+              title: "Рабат",
+              name: "rabat",
+              geo_prefix: 'earth/africa/morocco',
+            }
+          ],
+          activites: [
+          ]
+        }
+      end
+      
+      def services_card
+        {
+          type: 'services',
+          title_included: 'Включено в стоимость',
+          title_additional: 'За дополнительную плату',
+          id: rnd,
+          content: {
+            included: [
+              {
+                title: 'Группа 1',
+                icon: 'home',
+                services: [
+                  {title: description},
+                  {title: description},
+                  {title: description},
+                ]
+              }
+            ]
+          }
+        }
+      end
+
+
+      def route_card
+        {
+          type: 'route',
+          title: 'Маршрут тура',
+          id: rnd,
+          content: {
+            map: {
+              nodes: []
+            },
+            days: [
+              {
+                day: '1',
+                description: description,
+              },
+              {
+                day: '2',
+                description: description,
+                days_objects: [
+                  {
+                    type: 'slideshow',
+                    photos: [
+                      photo
+                    ]*rnd,
+                    description: description,
+                    title: 'Северная Норвегия, рыбалка'
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      end
+      
+      def additional_services
+        {
+          type: 'additional_services',
+          title: 'Дополнительные услуги',
+          id: rnd,
+          content: {
+            services: [
+              {
+                free: true,
+                id: rnd,
+                title: "Такси до аэропорта",
+                description: "<p>Если хотите - подбросим до аэропорта :)</p>"
+              },
+              {
+                free: false,
+                id: rnd,
+                title: "Оформление визы",
+                price: price,
+                content: {
+                  description: description,
+                }
+              },
+              {
+                free: false,
+                id: rnd,
+                title: "Оформление медицинской страховки",
+                description: description,
+                price: price
+              }
+            ]
+          }
+        }
+      end
+      
       def review
         {
           type: 'review',
@@ -1091,24 +1212,14 @@ module Jazz
             content: {
               main: [
                 title_card,
+                route_card,
+                services_card,
+                participation,
                 peoples_card,
                 dates_card,
                 accomodation_card,
                 media_card,
-                media_card,
-                media_card,
-                media_card,
-                peoples_card,
-                dates_card,
-                accomodation_card,
-                media_card,
-                media_card,
-                media_card,
-                peoples_card,
-                dates_card,
-                accomodation_card,
-                media_card,
-                media_card,
+                additional_services,
               ],
               aside: [
                 {type: 'booking'},
@@ -1172,6 +1283,7 @@ module Jazz
              media_card
            ],
            aside: [
+            locations_list,
             locations_list,
             tour
            ]
@@ -1367,6 +1479,10 @@ module Jazz
           count: 360,
           per_page: 20,
           results: [
+            tour,
+            tour,
+            tour,
+            tour,
             tour,
             tour,
             tour,

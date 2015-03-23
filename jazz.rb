@@ -17,34 +17,84 @@ module Jazz
     format :json
 
     helpers do
+      def specs_card
+        {
+          type: 'specs',
+          title: 'Особенности тура',
+          icon: 'star',
+          id: rnd,
+          content: {
+            primary_tags: [
+              {
+                type: 'peoples',
+                value: 'от 3-х'
+              },
+              {
+                type: 'duration',
+                value: '12 дней'
+              }
+            ],
+            specs: [
+              {description: 'Галечный пляж'},
+              {description: 'Кафе "Предпоследний приют"'}
+            ]
+          }
+        }
+      end
+
+      def documents_card
+        {
+          type: 'documents',
+          title: 'Документы',
+          id: rnd,
+          content: {
+            documents: [
+              {
+                title:  'Заграничный паспорт'
+              },
+              {
+                title: 'Шенгенская виза',
+                is_required: true,
+              },
+              {
+                title: 'Медицинская страховка',
+                is_included: true
+              }
+            ]
+          }
+        }
+      end
+
       def participation
         {
           type: 'participation',
           id: rnd,
           title_locations: 'Вы посетите',
           title_activities: 'Вы займетесь',
-          locations: [
-            {
-              type: 'location',
-              title: "Рабат",
-              name: "rabat",
-              geo_prefix: 'earth/africa/morocco',
-            },
-            {
-              type: 'location',
-              title: "Рабат",
-              name: "rabat",
-              geo_prefix: 'earth/africa/morocco',
-            },
-            {
-              type: 'location',
-              title: "Рабат",
-              name: "rabat",
-              geo_prefix: 'earth/africa/morocco',
-            }
-          ],
-          activites: [
-          ]
+          content: {
+            locations: [
+              {
+                type: 'location',
+                title: "Рабат",
+                name: "rabat",
+                geo_prefix: 'earth/africa/morocco',
+              },
+              {
+                type: 'location',
+                title: "Рабат",
+                name: "rabat",
+                geo_prefix: 'earth/africa/morocco',
+              },
+              {
+                type: 'location',
+                title: "Рабат",
+                name: "rabat",
+                geo_prefix: 'earth/africa/morocco',
+              }
+            ],
+            activites: [
+            ]
+          }
         }
       end
       
@@ -114,12 +164,14 @@ module Jazz
               {
                 free: true,
                 id: rnd,
+                option_id: "#{rnd}#{rnd}",
                 title: "Такси до аэропорта",
                 description: "<p>Если хотите - подбросим до аэропорта :)</p>"
               },
               {
                 free: false,
                 id: rnd,
+                option_id: "#{rnd}#{rnd}",
                 title: "Оформление визы",
                 price: price,
                 content: {
@@ -129,6 +181,7 @@ module Jazz
               {
                 free: false,
                 id: rnd,
+                option_id: "#{rnd}#{rnd}",
                 title: "Оформление медицинской страховки",
                 description: description,
                 price: price
@@ -508,12 +561,13 @@ module Jazz
               {
                 departure_date: '02.10.2014',
                 return_date: '01.10.2014',
-                price: 70000
+                price: price,
+                selected: true
               },
               {
                 departure_date: '29.11.2014',
                 return_date: '30.11.2014',
-                price: 70000
+                price: price
               }
             ]
           }
@@ -549,6 +603,7 @@ module Jazz
               {
                 type: 'hotel',
                 id: rnd,
+                option_id: "#{rnd}#{rnd}",
                 title: 'Отель ' + title,
                 is_default: true,
                 object: {
@@ -609,6 +664,8 @@ module Jazz
                     {
                       type: 'room',
                       id: Faker::Number.number(10),
+                      option_id: "#{rnd}#{rnd}",
+                      price: price,
                       title: 'Комната ' + title,
                       content: {
                         description: description,
@@ -648,12 +705,16 @@ module Jazz
                     {
                       type: 'room',
                       id: Faker::Number.number(10),
+                      option_id: "#{rnd}#{rnd}",
+                      price: price,
                       title: 'Комната ' + title,
                       description: description
                     },
                     {
                       type: 'room',
                       id: Faker::Number.number(10),
+                      option_id: "#{rnd}#{rnd}",
+                      price: price,
                       title: 'Комната ' + title,
                       description: description
                     }
@@ -663,6 +724,7 @@ module Jazz
               {
                 type: 'hotel',
                 id: rnd,
+                option_id: "#{rnd}#{rnd}",
                 title: 'Отель ' + title,
                 is_default: true,
                 object: {
@@ -723,6 +785,7 @@ module Jazz
                     {
                       type: 'room',
                       id: Faker::Number.number(10),
+                      option_id: "#{rnd}#{rnd}",
                       title: 'Комната ' + title,
                       price: price,
                       content: {
@@ -763,6 +826,7 @@ module Jazz
                     {
                       type: 'room',
                       id: Faker::Number.number(10),
+                      option_id: "#{rnd}#{rnd}",
                       title: 'Комната ' + title,
                       description: description,
                       price: price,
@@ -770,6 +834,7 @@ module Jazz
                     {
                       type: 'room',
                       id: Faker::Number.number(10),
+                      option_id: "#{rnd}#{rnd}",
                       title: 'Комната ' + title,
                       description: description,
                       price: price,
@@ -816,7 +881,13 @@ module Jazz
       end
 
       def price
-        {
+        rub = 80000 + Random.rand(10)*1000
+        usd = rub/60
+        eur = rub/70
+
+        { 
+          id: "#{rnd}#{rnd}",
+          
           options: {
             dates: {
               departure_date: '23.10.2014',
@@ -830,11 +901,15 @@ module Jazz
           prices: [
             {
               currency: 'rub',
-              value: 122000
+              value: rub
             },
             {
               currency: 'usd',
-              value: 2000
+              value: usd
+            },
+            {
+              currency: 'eur',
+              value: eur,
             } 
           ]
         }
@@ -989,16 +1064,7 @@ module Jazz
             geo_prefix: 'marocco/rabat',
             slug: 'awesome-tour'
           },
-          price: [
-            {
-              currency: 'rub',
-              amount: '120000'
-            },
-            {
-              currency: 'usd',
-              amount: '2200'
-            }
-          ],
+          price: price,
 
           title: "Шикарный тур",
           content: {
@@ -1055,8 +1121,85 @@ module Jazz
       end
     end
 
+
+    get '/price/:id' do
+
+      adults = params[:adults].to_i || 2
+      rub = adults*80000 + Random.rand(10)*1000
+      usd = rub/60
+      eur = rub/70
+      {
+        # options: {
+        #   dates: {
+        #     departure_date: '23.10.2014',
+        #     return_date: '30.10.2014',
+        #   },
+        #   peoples: {
+        #     adults: 4,
+        #     children: '1-12-12'
+        #   }
+        # },
+        prices: [
+          {
+            currency: 'rub',
+            value: rub
+          },
+          {
+            currency: 'usd',
+            value: usd
+          },
+          {
+            currency: 'eur',
+            value: eur
+          }
+        ]
+      }
+    end
+
+    # resource :price do
+    #   get do
+    #     {}
+    #   end
+    #   params do
+    #     requires :id, type: Integer, desc: "Status id."
+    #   end
+    #   route_param :id do
+    #     rub = 80000 + Random.rand(10)*1000
+    #     usd = rub/60
+    #     eur = rub/70
+
+    #     {
+    #       options: {
+    #         dates: {
+    #           departure_date: '23.10.2014',
+    #           return_date: '30.10.2014',
+    #         },
+    #         peoples: {
+    #           adults: 4,
+    #           children: '1-12-12'
+    #         }
+    #       },
+    #       prices: [
+    #         {
+    #           currency: 'rub',
+    #           value: rub
+    #         },
+    #         {
+    #           currency: 'usd',
+    #           value: usd
+    #         },
+    #         {
+    #           currency: 'eur',
+    #           value: eur
+    #         }
+    #       ]
+    #     }
+    #   end
+    # end
+
     get '/main_grid' do
       {
+        id: rnd,
         content: {
           sections: [
 
@@ -1213,6 +1356,8 @@ module Jazz
               main: [
                 title_card,
                 route_card,
+                specs_card,
+                documents_card,
                 services_card,
                 participation,
                 peoples_card,

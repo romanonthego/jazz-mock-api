@@ -555,7 +555,7 @@ module Jazz
           navigation: true,
           content: {
             user_dates: {
-
+              
             },
             dates: [
               {
